@@ -46,8 +46,5 @@ io.on('connection', socket => {
     })
 })
 
-console.log("test1")
-server.listen(8001);
-console.log("test2")
-
+server.listen(process.env.PORT || 3030);
 
