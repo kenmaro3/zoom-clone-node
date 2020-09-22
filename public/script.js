@@ -31,6 +31,23 @@ navigator.mediaDevices.getUserMedia({
     socket.on('user-connected', (userId) => {
         connectToNewUser(userId, stream);
     }) 
+
+
+    // input
+    let text = $('input');
+
+    $('html').keydown((e) => {
+    
+        if(e.which == 13 && text.val().length !== 0){
+            console.log(text.val());
+    
+            socket.emit('message', text.val());
+            
+            text.val('');
+            
+        }
+    })
+    
     
     socket.on('createMessage', message => {
         console.log("test")
@@ -57,6 +74,10 @@ const connectToNewUser = (userId, stream) => {
         addVideoStream(video, userVideoStream);
     })
 
+    call.on('close', () => {
+        video.remove()
+    })
+
 }
 
 const addVideoStream = (video, stream) => {
@@ -67,23 +88,6 @@ const addVideoStream = (video, stream) => {
 
     videoGrid.append(video);
 }
-
-
-let text = $('input');
-
-$('html').keydown((e) => {
-
-    if(e.which == 13 && text.val().length !== 0){
-        console.log(text.val());
-
-        socket.emit('message', text.val());
-        
-        text.val('');
-        
-    }
-    
-
-})
 
 
 
